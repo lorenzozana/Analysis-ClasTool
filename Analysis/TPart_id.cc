@@ -226,6 +226,20 @@ void TPart_id::InitHistos(void){
   Acc_acc->Add(generated_evnt_bin = new TH1F("generated_evnt_bin","Generated Event binning",12960, 0, 12960));
   Acc_acc->Add(deforming_matrix_inv = new TH2F("deforming_matrix_inv","Inverse of bin migration of reconstructed Event",12960,0,12960,12960,0,12960));
 
+  tree_momcorr = new TTree("Momentum_Correction_tree","tree for store variables for momentum correction");
+  tree_momcorr->Branch("rec_el_E",&rec_el_E,"rec_el_E/D");
+  tree_momcorr->Branch("rec_el_px",&rec_el_px,"rec_el_px/D");
+  tree_momcorr->Branch("rec_el_py",&rec_el_py,"rec_el_py/D");
+  tree_momcorr->Branch("rec_el_pz",&rec_el_pz,"rec_el_pz/D");
+  tree_momcorr->Branch("rec_pr_E",&rec_pr_E,"rec_pr_E/D");
+  tree_momcorr->Branch("rec_pr_px",&rec_pr_px,"rec_pr_px/D");
+  tree_momcorr->Branch("rec_pr_py",&rec_pr_py,"rec_pr_py/D");
+  tree_momcorr->Branch("rec_pr_pz",&rec_pr_pz,"rec_pr_pz/D");
+  tree_momcorr->Branch("rec_pim_E",&rec_pim_E,"rec_pim_E/D");
+  tree_momcorr->Branch("rec_pim_px",&rec_pim_px,"rec_pim_px/D");
+  tree_momcorr->Branch("rec_pim_py",&rec_pim_py,"rec_pim_py/D");
+  tree_momcorr->Branch("rec_pim_pz",&rec_pim_pz,"rec_pim_pz/D");
+
   tree_gen = new TTree("Acceptance_tree_gen","Acceptance bins with Mass of the rho GENERATED EVENTS");
   tree_gen->Branch("Acc_Q2_g",&Acc_Q2_g,"Acc_Q2_g/I");
   tree_gen->Branch("Acc_W_g",&Acc_W_g,"Acc_W_g/I");
@@ -397,6 +411,7 @@ void TPart_id::DeleteHistos(void){
   tree_rec->Delete();
   tree_def->Delete();
   tree_cc->Delete();
+  tree_momcorr->Delete();
 }
 
 void TPart_id::ClearHistos(void){
@@ -445,6 +460,7 @@ void TPart_id::ClearHistos(void){
   tree_rec->Reset();
   tree_def->Reset();
   tree_cc->Reset();
+  tree_momcorr->Reset();
 }
 
 void TPart_id::Write(void){
@@ -519,7 +535,7 @@ void TPart_id::Write(void){
    
   // dir5->cd("..");  
   
-  
+  tree_momcorr->Write();
 
   dir1->cd("..");
 }
@@ -2012,10 +2028,28 @@ Int_t TPart_id::Run_momcorr(Int_t Max_evt){
       }
       v4_t = v4_beam + v4_tg - v4_e - v4_p - v4_pim;
       // if      (proton_id_pass == 1 && GetNPart() == 3 && electron_id_pass ==1) {
-	miss_mass_1->Fill(v4_t.M());
-	proton_angle->Fill(v4_p.Theta());
-	pim_angle->Fill(v4_pim.Theta());
+	// miss_mass_1->Fill(v4_t.M());
+	// proton_angle->Fill(v4_p.Theta());
+	// pim_angle->Fill(v4_pim.Theta());
 	missmom_vs_missen->Fill(v4_t.E(),v4_t.Rho());
+	if (v4_t.E()>191.8 && v4_t.E()<192.25 && v4_t.Rho() > 0.0 && v4_t.Rho() <0.35 ) {
+	  miss_mass_1->Fill(v4_t.M());
+	  proton_angle->Fill(v4_p.Theta());
+	  pim_angle->Fill(v4_pim.Theta());
+	  rec_pim_E = v4_pim.E();
+	  rec_pim_px = v4_pim.Px();
+	  rec_pim_py = v4_pim.Py();
+	  rec_pim_pz = v4_pim.Pz();
+	  rec_el_E = v4_e.E();
+	  rec_el_px = v4_e.Px();
+	  rec_el_py = v4_e.Py();
+	  rec_el_pz = v4_e.Pz();
+	  rec_pr_E = v4_p.E();
+	  rec_pr_px = v4_p.Px();
+	  rec_pr_py = v4_p.Py();
+	  rec_pr_pz = v4_p.Pz();
+	  tree_momcorr->Fill();
+	}
 	//	printf("event ok \n");
 	filevt->Fill();  // Fill the output chain.
 	//      }

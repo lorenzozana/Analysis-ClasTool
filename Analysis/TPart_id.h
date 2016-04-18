@@ -106,6 +106,22 @@ class TPart_id: public TPart_ident_ct{
   Double_t Acc_z_r_v;
   Double_t Acc_thetapip_r_v;
   Double_t Acc_lc_r_v;
+
+
+  Double_t rec_pim_E;
+  Double_t rec_pim_px;
+  Double_t rec_pim_py;
+  Double_t rec_pim_pz;
+  Double_t rec_el_E;
+  Double_t rec_el_px;
+  Double_t rec_el_py;
+  Double_t rec_el_pz;
+  Double_t rec_pr_E;
+  Double_t rec_pr_px;
+  Double_t rec_pr_py;
+  Double_t rec_pr_pz;
+
+
   
   // CC Efficiency Arrays
   Double_t CC_theta_ev;
@@ -422,6 +438,7 @@ class TPart_id: public TPart_ident_ct{
   TTree *tree_gen ;
   TTree *tree_rec ;
   TTree *tree_def ;
+  TTree *tree_momcorr ;
   TTree *tree_cc;
 
   // Handy Function. TF1 *BetaP=new TF1("BetaP2","x/TMath::Sqrt(x*x + [0]*[0])",0.,4.)

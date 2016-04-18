@@ -1,0 +1,4 @@
+/bin/tcsh -c "source tcshrc ; nice root -b run_momcorr1.C"
+/bin/tcsh -c "source tcshrc ; nice root -b run_momcorr2.C"
+/bin/tcsh -c "source tcshrc ; nice root -b run_momcorr3.C"
+
