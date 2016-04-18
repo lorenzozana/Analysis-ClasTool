@@ -1,0 +1,25 @@
+Load Tools_fidc.C (command: .L Tools_fidc.C++)
+Load fidc_cut.cc  (command: .L fidc_cut.cc++)
+as in the example, the program should have the lines:
+
+
+#include "fidc_cut.h"
+
+
+The fiducial parameters for a certain beam energy are Loaded in the code with:
+
+
+TFidCut test("param40.txt");  // In this case for 4.0GeV 
+
+
+The fiducial cut function need a TVector3 of the momentum as input:
+
+V3p = (evnt->GetMomVec());
+
+
+The fiducial cut is passed if the function CheckCut( ) return 1, for example (in this case 
+test was defined before:
+
+test.CheckCut(V3p)==1
+
+

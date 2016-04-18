@@ -1,0 +1,4 @@
+### Automatically generated dependencies. Update with 'make dep'
+# DO NOT DELETE
+
+obj/Linux_Ubuntu12.04-x86_64-gcc4.6/cc_stuff.o: cc_stuff.h

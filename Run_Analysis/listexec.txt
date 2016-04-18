@@ -1,0 +1,4 @@
+/bin/tcsh -c "source tcshrc ; nice root -b run_filter_1.C"
+/bin/tcsh -c "source tcshrc ; nice root -b run_filter_2.C"
+/bin/tcsh -c "source tcshrc ; nice root -b run_filter_3.C"
+
