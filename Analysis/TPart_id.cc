@@ -77,6 +77,9 @@ void TPart_id::InitHistos(void){
   Hpid->Add(miss_mass_8 = new TH1F("miss_mass_8","Missing Mass 8 proton knockout; GeV",200,184.7,186.8));
   Hpid->Add(miss_mass_9 = new TH1F("miss_mass_9","Missing Mass 9 proton knockout; GeV",200,183.8,185.9));
   Hpid->Add(miss_mass_10 = new TH1F("miss_mass_10","Missing Mass 10 proton knockout; GeV",100,182.9,185.0));
+  Hpid->Add(proton_angle = new TH1F("proton_angle","Angle of the proton; #theta",100,0.0,3.14));
+  Hpid->Add(pim_angle = new TH1F("pim_angle","Angle of the #pi^{-}; #theta",100,0.0,3.14));
+  Hpid->Add(missmom_vs_missen = new TH2F("missmom_vs_missen","Missing momentum vs missing energy; missing energy (GeV);missing mom (GeV)",100,191.3,193.4,100,0.0,5.0));
 
   Hpid->Add(pim_charge = new TH1F("pim_charge","#pi^{-} charge",100,-3.5,0));
   Hpid->Add(pim_mass = new TH1F("pim_mass","#pi^{-} mass",100,0,2));
@@ -1974,16 +1977,16 @@ Int_t TPart_id::Run_momcorr(Int_t Max_evt){
     //    printf("testing number of particles are fine \t");
     // if (Cuts.Test(electron_id_pass == 1,C_Good_e) && Cuts.Test(proton_id_pass == 1,C_Good_proton) && Cuts.Test(pim_id_pass == 1,C_Good_pim) && Cuts.Test(npart_pass == 1,C_Goodpart)) {
     if (electron_id_pass == 1) {
-      printf("electron id \t");
+      //      printf("electron id \t");
       if (proton_id_pass == 1 ) {
-	printf("proton id \t");
+	//	printf("proton id \t");
 	if ( pim_id_pass == 1 ) {
-	  printf("pion id \t");
+	  //	  printf("pion id \t");
 	  if ( npart_pass == 1) {
-            printf("test number of particles \t");
+	    //            printf("test number of particles \t");
 	    which_target = vertex_cut_elec();
 	    if (Cuts.Test(which_target==2,C_el_z) ) {
-	      printf("test target \n");
+	      //	      printf("test target \n");
 	      good_event_towrite = 1;     
 	    }	
 	  }
@@ -2010,7 +2013,10 @@ Int_t TPart_id::Run_momcorr(Int_t Max_evt){
       v4_t = v4_beam + v4_tg - v4_e - v4_p - v4_pim;
       // if      (proton_id_pass == 1 && GetNPart() == 3 && electron_id_pass ==1) {
 	miss_mass_1->Fill(v4_t.M());
-	printf("event ok \n");
+	proton_angle->Fill(v4_p.Theta());
+	pim_angle->Fill(v4_pim.Theta());
+	missmom_vs_missen->Fill(v4_t.E(),v4_t.Rho());
+	//	printf("event ok \n");
 	filevt->Fill();  // Fill the output chain.
 	//      }
       

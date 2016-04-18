@@ -268,6 +268,9 @@ class TPart_id: public TPart_ident_ct{
   TH1F *miss_mass_8;
   TH1F *miss_mass_9;
   TH1F *miss_mass_10;
+  TH1F *proton_angle;
+  TH1F *pim_angle;
+  TH2F *missmom_vs_missen;
   TH1F *proton_vx;
   TH1F *proton_vy;
   TH1F *proton_vz;
